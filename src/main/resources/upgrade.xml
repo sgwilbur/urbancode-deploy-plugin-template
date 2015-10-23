@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin-upgrade
+        xmlns="http://www.urbancode.com/UpgradeXMLSchema_v1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<!--
+ Describe how the upgrade process should flow, easiest to look an existing plugin with multiple
+ versions for guidance here.
+-->
+</plugin-upgrade>

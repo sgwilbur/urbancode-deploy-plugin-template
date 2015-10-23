@@ -1,0 +1,50 @@
+//for Ant filter
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'groovy'
+defaultTasks 'distPlugin'
+
+configurations {
+    // Remove the groovy-all jar from runtime dependencies
+    runtime.exclude module: 'groovy-all'
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile 'com.ibm.urbancode.plugins:groovy-plugin-utils:1.0'
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+  mavenCentral()
+}
+
+// Updated source set to include the xml files
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src/main/groovy', 'src/main/resources']
+        }
+    }
+}
+
+task copyDeps(type: Copy) {
+    from configurations.runtime
+    into 'lib'
+}
+
+task distPlugin(type: Zip, dependsOn: 'compileGroovy') {
+    def pluginProps = new Properties()
+    file("gradle.properties").withInputStream{
+        pluginProps.load(it);
+    }
+    from( sourceSets.main.groovy.srcDirs ) {
+        filter(ReplaceTokens, tokens: pluginProps )
+    }
+    into('lib') {
+        from configurations.runtime
+    }
+    archiveName = "${pluginName}-${pluginVersion}.zip"
+}
+
+task cleanAll(dependsOn: ['clean', 'cleanCopyDeps', 'cleanDistPlugin'])
