@@ -9,6 +9,8 @@
   -->
   <author name="@authorName@">
     <organization>@authorOrganization@</organization>
+    <email>@authorEmail@</email>
+    <website>@authorWebSite@</website>
     <bio>@authorBio@</bio>
   </author>
 
