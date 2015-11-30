@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- http://www-01.ibm.com/support/knowledgecenter/SS4GSP_6.2.0/com.ibm.udeploy.reference.doc/topics/ref_create_header.html -->
   <header>
     <identifier id="@pluginId@" version="@pluginVersion@" name="@pluginName@"/>
     <description>@pluginDescription@</description>
-    <tag>@plugintags@</tag>
+    <tag>@pluginTag@</tag>
+    <!--
+    Optional Items
+    <server:required-server-version>6.0.1.0</server:required-server-version>
+    <server:dependencies>
+      <server:dependency plugin-id="com.urbancode.air.plugin.WebSphere" min-version="76"/>
+    </server:dependencies>
+    -->
   </header>
 
   <!-- Define each Step the plugin with define -->
@@ -16,11 +24,30 @@
      Define what we will prompt the user for.
     -->
     <properties>
-      <property name="property_name" required="true">
+      <property name="step1_property_name" required="true">
          <property-ui type="textBox" label="Property Name"
              description="The property you want to pass in."
-             default-value="42"/>
+             default-value="42"
+             hidden="false" />
       </property>
+
+    <!-- Define some hidden properties
+     Also specify a default value
+    -->
+      <property name="password" required="false">
+        <property-ui type="secureBox" label="Password"
+          description="The password to be used to connect."
+          default-value="${property:resource/password}"
+          hidden="true"/>
+      </property>
+
+      <property name="token" required="false">
+        <property-ui type="textAreaBox" label="Token"
+          description="Use a token instead of a pasword"
+          default-value="${property:resource/token}"
+          hidden="true"/>
+      </property>
+
     </properties>
     <post-processing>
       <![CDATA[
@@ -36,7 +63,7 @@
      The command to run.
     -->
     <command program="${GROOVY_HOME}/bin/groovy">
-      <arg value="parameters_passed_to_tool"/>
+      <arg file="runner.groovy"/>
       <arg file="step1.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>

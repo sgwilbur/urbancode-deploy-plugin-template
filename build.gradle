@@ -4,15 +4,28 @@ import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'groovy'
 defaultTasks 'distPlugin'
 
-configurations {
-    // Remove the groovy-all jar from runtime dependencies
-    runtime.exclude module: 'groovy-all'
+configurations
+{
+  // Remove the groovy-all jar from runtime dependencies
+  untime.exclude module: 'groovy-all'
 }
 
 // In this section you declare the dependencies for your production and test code
-dependencies {
+dependencies
+{
     compile 'com.ibm.urbancode.plugins:groovy-plugin-utils:1.0'
+
+    // TODO: Add your dependencies ...
 }
+
+// Will create a jar of the files in the project, we do not want to include the plugin *.xml files or any compiled versions of groovy classes by default.
+jar
+{
+ // Do not include the compiled groovy classes in the jar
+ exclude "*.class"
+ exclude "*.xml"
+}
+
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -38,12 +51,15 @@ task distPlugin(type: Zip, dependsOn: 'compileGroovy') {
     file("gradle.properties").withInputStream{
         pluginProps.load(it);
     }
+    // copy and filter tokens in copied versions
     from( sourceSets.main.groovy.srcDirs ) {
         filter(ReplaceTokens, tokens: pluginProps )
     }
     into('lib') {
         from configurations.runtime
     }
+    // customize output location of plugin archive
+    // destinationDir = file('dist')
     archiveName = "${pluginName}-${pluginVersion}.zip"
 }
 

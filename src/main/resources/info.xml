@@ -92,10 +92,9 @@
 
   <meta-html>
     <meta content="@pluginDescription@" name="description"/>
-    <meta content="@pluginTags@" name="keywords"/>
+    <meta content="@pluginKeywords@" name="keywords"/>
   </meta-html>
 
-  <!-- Do not change the release-version, the build process injects it. -->
   <release-version>@pluginVersion@</release-version>
   <release-notes>
     <!--
