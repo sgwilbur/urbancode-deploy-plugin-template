@@ -12,7 +12,7 @@ def exitStatus = 0
 println "Getting properties"
 props.each { println it }
 
-def step1_property_name = props['step_1_property_name'].trim()
+def step1_property_name = props['step1_property_name'].trim()
 def password = props['token']?props['token']:props['password']
 
 // do something very important here!
